@@ -45,7 +45,7 @@ export default function ResultCard({ student }: { student: StudentResultWithRank
         <section className="mb-4 flex flex-col items-center justify-between border-b pb-2 md:flex-row">
           <div className="flex flex-col items-center space-y-2 md:flex-row md:items-center md:space-x-2 md:space-y-0">
             <h2 className="font-title text-center text-lg font-bold md:text-left">
-              23RD MATHEMATICS APTITUDE TEST - 2026
+              24RD MATHEMATICS APTITUDE TEST - 2026
             </h2>
           </div>
           <Image

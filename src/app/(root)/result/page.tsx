@@ -113,10 +113,10 @@ export default function Result() {
               Please verify your roll number. If you are sure it is correct, and
               still not able to find your result, please contact us at
               <a
-                href="tel:+919382553880"
+                href="tel:+918972526679"
                 className="ml-1 text-blue-600 hover:underline"
               >
-                +91-9382553880
+                +91-8972526679
               </a>
               .
             </li>
