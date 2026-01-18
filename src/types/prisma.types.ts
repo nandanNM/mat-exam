@@ -13,6 +13,7 @@ export type TopRankerResult = {
   school_code: string;
   center_name: string;
   center_code: string;
+  accuracy: string;
 };
 
 export interface Center {
