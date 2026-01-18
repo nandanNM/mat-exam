@@ -1,9 +1,9 @@
 import Link from "next/link";
 import Image from "next/image";
 import ContactPage from "@/components/ContactUs";
-import { NotepadTextIcon } from "lucide-react";
-import { cn } from "@/lib/utils";
-import { buttonVariants } from "@/components/ui/button";
+import { NotepadTextIcon, ScrollTextIcon } from "lucide-react";
+
+import AnimatedButton from "@/components/AnimatedButton";
 
 export default async function Home() {
   return (
@@ -26,7 +26,7 @@ export default async function Home() {
             >
               Explore Past Questions
             </Link>
-            <Link
+            {/* <Link
               href="/admit"
               className={cn(
                 "rounded-xl p-3 text-center font-semibold",
@@ -34,17 +34,17 @@ export default async function Home() {
               )}
             >
               Download Admit Card
-            </Link>
-            {/* <Link href="/result">
+            </Link> */}
+            <Link href="/result">
               <AnimatedButton>
                 <span className="flex items-center justify-center gap-2">
                   Check Result
                   <ScrollTextIcon className="h-6 w-6 text-pretty" />
                 </span>
               </AnimatedButton>
-            </Link> */}
+            </Link>
             {/* top rankers button */}
-            {/* <Link href="/result/rankers">
+            <Link href="/result/rankers">
               <button
                 className="group relative isolation-auto z-10 mx-auto flex w-full items-center justify-center gap-2 overflow-hidden rounded-full border-2 bg-[#0A0D2D] px-4 py-2 font-sans text-lg text-gray-50 shadow-xl backdrop-blur-md before:absolute before:-left-full before:-z-10 before:aspect-square before:w-full before:rounded-full before:bg-emerald-500 before:transition-all before:duration-700 hover:text-gray-50 before:hover:left-0 before:hover:w-full before:hover:scale-150 before:hover:duration-700 lg:font-semibold"
                 type="submit"
@@ -61,7 +61,7 @@ export default async function Home() {
                   ></path>
                 </svg>
               </button>
-            </Link> */}
+            </Link>
           </div>
         </div>
         <Image
@@ -90,7 +90,7 @@ export default async function Home() {
                   Result Notice 👍
                 </strong>
                 <p className="text-sm">
-                  Great news! 🎉 MAT-2024 results are live as of <b>18/01/26</b>
+                  Great news! 🎉 MAT-2026 results are live as of <b>18/01/26</b>
                 </p>
                 <Link
                 className=" underline"

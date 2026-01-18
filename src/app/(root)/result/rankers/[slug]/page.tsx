@@ -23,14 +23,23 @@ export default async function TopRankerResultPage({
             r.total_score,
             r.correct_attempt,
             r.total_attempt,
+            -- Calculate accuracy as percentage
+            CASE 
+              WHEN r.total_attempt > 0 THEN (r.correct_attempt::DECIMAL / r.total_attempt::DECIMAL) * 100
+              ELSE 0
+            END as accuracy,
             sc.school_name,
             sc.school_code,
             c.center_name,
             c.center_code,
             DENSE_RANK() OVER (
               ORDER BY 
-                r.total_score DESC, 
-                r.correct_attempt DESC
+                r.total_score DESC,
+                -- Accuracy as tie-breaker (higher accuracy = better rank)
+                CASE 
+                  WHEN r.total_attempt > 0 THEN (r.correct_attempt::DECIMAL / r.total_attempt::DECIMAL)
+                  ELSE 0
+                END DESC
             ) as rank
           FROM 
             students s
@@ -46,12 +55,13 @@ export default async function TopRankerResultPage({
         SELECT *
         FROM RankedResults
         WHERE rank <= 10
-        ORDER BY rank, total_score DESC, correct_attempt DESC, name;
+        ORDER BY rank, total_score DESC, accuracy DESC, name;
       `;
       
       const data = rankers.map((result) => ({
         ...result,
         rank: result.rank.toString(), // Convert BigInt safely
+        accuracy: Number(result.accuracy).toFixed(2), // Format accuracy to 2 decimals
       }));
 
       return data;
@@ -98,7 +108,7 @@ export default async function TopRankerResultPage({
         Top Rankers - Class {className}
       </h1>
       <div className="mb-4 text-center text-sm text-gray-600">
-        Ranking based on: Total Score (primary) → Correct Attempts (tie-breaker)
+        Ranking based on: Total Score (primary) → Accuracy % (tie-breaker)
       </div>
       <div className="w-full max-w-full overflow-hidden rounded-lg bg-white shadow-lg md:max-w-5xl">
         <div className="overflow-x-auto">
@@ -114,8 +124,8 @@ export default async function TopRankerResultPage({
                 <th className="hidden px-4 py-3 text-left sm:table-cell">Center</th>
                 <th className="px-4 py-3 text-center">Roll Number</th>
                 <th className="px-4 py-3 text-center">Score</th>
-                <th className="hidden px-4 py-3 text-center lg:table-cell">Correct</th>
-                <th className="hidden px-4 py-3 text-center lg:table-cell">Total</th>
+                <th className="hidden px-4 py-3 text-center lg:table-cell">Accuracy</th>
+                <th className="hidden px-4 py-3 text-center lg:table-cell">Attempts</th>
               </tr>
             </thead>
             <tbody>
@@ -153,11 +163,11 @@ export default async function TopRankerResultPage({
                   <td className="px-4 py-3 text-center font-bold text-blue-600">
                     {ranker.total_score}
                   </td>
-                  <td className="hidden px-4 py-3 text-center text-green-600 lg:table-cell">
-                    {ranker.correct_attempt}
+                  <td className="hidden px-4 py-3 text-center text-green-600 font-semibold lg:table-cell">
+                    {ranker.accuracy}%
                   </td>
                   <td className="hidden px-4 py-3 text-center text-gray-600 lg:table-cell">
-                    {ranker.total_attempt}
+                    {ranker.correct_attempt}/{ranker.total_attempt}
                   </td>
                 </tr>
               ))}
@@ -170,7 +180,7 @@ export default async function TopRankerResultPage({
       <div className="mt-4 w-full max-w-full md:max-w-5xl lg:hidden">
         <div className="rounded-lg bg-blue-50 p-4">
           <p className="text-xs text-gray-600 text-center">
-            💡 View on larger screen to see Correct/Total attempts
+            💡 View on larger screen to see Accuracy % and Attempts
           </p>
         </div>
       </div>
